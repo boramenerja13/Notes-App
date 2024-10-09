@@ -9,11 +9,13 @@ import Button from '@mui/material/Button';
 import FolderIcon from '@mui/icons-material/Folder';
 import AddIcon from '@mui/icons-material/Add';
 import ListItemButton from '@mui/material/ListItemButton';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 370;
 
 export default function Sidebar({ onCreateCategory }) {
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedCategories = JSON.parse(localStorage.getItem('categories'));
@@ -89,7 +91,9 @@ export default function Sidebar({ onCreateCategory }) {
                     height: '42px',
                     width: '350px',
                   }}
+                  onClick={() => navigate(`/category/${index}`)}
                 >
+                  
                   <FolderIcon sx={{ marginRight: 1 }} />
                   <ListItemText primary={category.name} sx={{ color: '#fff' }} />
                 </ListItemButton>

@@ -2,22 +2,43 @@ import React, { useState } from 'react';
 import { Box, Button, TextField, Paper } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 
-export default function CreateNote() {
+export default function CreateNote({ categories, onSaveNote }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   const handleSave = () => {
-    console.log("Note Saved:", { title, content });
+    if (!title || !content) {
+      alert("Nothing to save");
+      return;
+    }
+
+    const category = prompt("Select a category from: " + categories.map(c => c.name).join(", "));
+    if (category) {
+      const foundCategory = categories.find(c => c.name === category);
+      if (foundCategory) {
+        onSaveNote({
+          title,
+          content,
+          category: foundCategory.name,
+        });
+
+        alert("Successfully saved");
+        setTitle('');
+        setContent('');
+      } else {
+        alert("Category not found");
+      }
+    }
   };
 
   return (
     <Paper
       elevation={3}
       sx={{
-        width: '100%', 
-        maxWidth: '1440px', 
+        width: '100%',
+        maxWidth: '1440px',
         height: 'calc(100vh - 60px)',
-        padding: '24px', 
+        padding: '24px',
         borderRadius: '10px',
         margin: 'auto',
         boxShadow: '0 1px 4px rgba(0, 0, 0, 0.16)',
@@ -42,22 +63,7 @@ export default function CreateNote() {
               },
             }}
           >
-          </Button>
-
-          <Button
-            variant="contained"
-            sx={{ 
-              backgroundColor: '#1264A3',
-              width: '120px',
-              height: '32px',
-              gap: '0px',
-              color: '#fff',
-              margin: '0 10px',
-              '&:hover': {
-                backgroundColor: '#0E4C8A',
-              },
-            }}
-          >
+            {/* Additional Action Button */}
           </Button>
 
           <Button
@@ -71,6 +77,7 @@ export default function CreateNote() {
               margin: '0 10px'
             }}
           >
+            {/* Additional Action Button */}
           </Button>
         </Box>
 
@@ -79,7 +86,7 @@ export default function CreateNote() {
             variant="contained"
             sx={{ 
               backgroundColor: '#1264A3',
-              width: '32px', 
+              width: '32px',
               height: '32px',
               gap: '0px',
               color: '#fff',
@@ -121,7 +128,6 @@ export default function CreateNote() {
         </Box>
       </Box>
 
-    
       <Box>
         <TextField
           fullWidth
@@ -167,4 +173,3 @@ export default function CreateNote() {
     </Paper>
   );
 }
-
