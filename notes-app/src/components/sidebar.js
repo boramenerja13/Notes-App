@@ -14,7 +14,7 @@ import { v4 as uuidV4 } from 'uuid';
 
 const drawerWidth = 370;
 
-export default function Sidebar({}) {
+export default function Sidebar({ }) {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
@@ -66,7 +66,7 @@ export default function Sidebar({}) {
                 backgroundColor: '#71CF48',
                 color: '#fff',
                 height: '52px',
-                marginBottom: '8px', 
+                marginBottom: '8px',
               }}
               onClick={() => {
                 const newCategory = prompt('Enter category name:');
@@ -93,7 +93,7 @@ export default function Sidebar({}) {
                   }}
                   onClick={() => navigate(`/category/${category.id}`)}
                 >
-                  
+
                   <FolderIcon sx={{ marginRight: 1 }} />
                   <ListItemText primary={category.name} sx={{ color: '#fff' }} />
                 </ListItemButton>

@@ -5,7 +5,7 @@ import Sidebar from './components/sidebar';
 import CreateNote from './components/createNote';
 import CategoryPage from './components/categoryPage';
 import { Box, CssBaseline } from '@mui/material';
-import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
   const localCategories = JSON.parse(localStorage.getItem('categories')) || []
@@ -44,18 +44,18 @@ function App() {
               paddingLeft: '10px',
               backgroundColor: '#ffffff',
               height: '100%',
-              overflowY: 'auto', 
+              overflowY: 'auto',
             }}
           >
             {/* <CreateNote categories={categories} onSaveNote={handleSaveNote} /> */}
             <Routes>
-                <Route path="/" element={<CreateNote categories={categories} />} />
-                <Route path="/category/:categoryId" element={<CategoryPage categories={categories} />} />
+              <Route path="/" element={<CreateNote categories={categories} />} />
+              <Route path="/category/:categoryId" element={<CategoryPage categories={categories} />} />
             </Routes>
           </Box>
         </Box>
       </div>
-  </Router>
+    </Router>
   );
 }
 

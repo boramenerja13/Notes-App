@@ -3,7 +3,7 @@ import { Box, Button, TextField, Paper, FormControl, InputLabel, Select, MenuIte
 import CheckIcon from '@mui/icons-material/Check';
 import { v4 as uuidV4 } from 'uuid';
 
-export default function CreateNote({ note }) {
+export default function CreateNote({ note, onSave, onDelete }) {
   const categories = JSON.parse(localStorage.getItem('categories')) || [];
 
   const [title, setTitle] = useState(note?.title || '');
@@ -20,24 +20,28 @@ export default function CreateNote({ note }) {
       return;
     }
 
-    const notes = JSON.parse(localStorage.getItem('notes')) || [];
-    notes.push({
-      id: uuidV4(),
+    const newNote = {
+      id: note?.id || uuidV4(), 
       title,
       content,
       category: selectedCategory,
-    })
+    };
 
-    localStorage.setItem('notes', JSON.stringify(notes))
+    if (note) {
+      onSave(newNote);
+    } else {
+      const notes = JSON.parse(localStorage.getItem('notes')) || [];
+      notes.push(newNote); 
+      localStorage.setItem('notes', JSON.stringify(notes));
+    }
+
     setTitle('');
     setContent('');
   };
 
-
   const handleCategoryChange = (event) => {
     setSelectedCategory(event.target.value);
   };
-
 
   return (
     <Paper
@@ -55,85 +59,6 @@ export default function CreateNote({ note }) {
         justifyContent: 'space-between',
       }}
     >
-      <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ marginBottom: '20px' }}>
-        <Box display="flex">
-          <Button
-            variant="contained"
-            sx={{ 
-              backgroundColor: '#1264A3',
-              width: '120px',
-              height: '32px',
-              gap: '0px',
-              color: '#fff',
-              margin: '0 10px',
-              '&:hover': {
-                backgroundColor: '#0E4C8A',
-              },
-            }}
-          >
-          </Button>
-
-          <Button
-            variant="contained"
-            sx={{ 
-              background: '#71CF48',
-              width: '120px',
-              height: '32px',
-              gap: '0px',
-              color: '#fff',
-              margin: '0 10px'
-            }}
-          >
-          </Button>
-        </Box>
-
-        <Box display="flex">
-          <Button
-            variant="contained"
-            sx={{ 
-              backgroundColor: '#1264A3',
-              width: '32px',
-              height: '32px',
-              gap: '0px',
-              color: '#fff',
-              margin: '0 10px',
-              '&:hover': {
-                backgroundColor: '#0E4C8A',
-              },
-            }}
-          />
-
-          <Button
-            variant="contained"
-            sx={{ 
-              backgroundColor: '#1264A3', 
-              width: '32px', 
-              height: '32px',
-              gap: '0px',
-              color: '#fff',
-              margin: '0 10px',
-              '&:hover': {
-                backgroundColor: '#0E4C8A',
-              },
-            }}
-          />
-
-          <Button
-            variant="contained"
-            sx={{ 
-              backgroundColor: '#1264A3', 
-              width: '32px', 
-              height: '32px', 
-              color: '#fff',
-              margin: '0 10px',
-              '&:hover': {
-                backgroundColor: '#0E4C8A',
-              },
-            }}
-          />
-        </Box>
-      </Box>
-
       <Box>
         <TextField
           fullWidth
@@ -144,8 +69,7 @@ export default function CreateNote({ note }) {
           sx={{ marginBottom: '20px' }}
         />
 
-        <FormControl fullWidth variant="outlined" 
-          sx={{ marginBottom: '20px' }}>
+        <FormControl fullWidth variant="outlined" sx={{ marginBottom: '20px' }}>
           <InputLabel id="dynamic-select-label">Select an Option</InputLabel>
           <Select
             labelId="dynamic-select-label"
@@ -154,7 +78,7 @@ export default function CreateNote({ note }) {
             label="Select an Option"
           >
             {categories?.map((category) => (
-              <MenuItem value={category.name}>
+              <MenuItem key={category.name} value={category.name}>
                 {category.name}
               </MenuItem>
             ))}
@@ -174,24 +98,64 @@ export default function CreateNote({ note }) {
       </Box>
 
       <Box display="flex" justifyContent="flex-end" sx={{ marginTop: 'auto', paddingTop: '20px' }}>
-        <Button
-          variant="contained"
-          color="success"
-          onClick={handleSave}
-          endIcon={<CheckIcon />}  
-          sx={{ 
-            height: '40px', 
-            width: '180px',
-            backgroundColor: '#71CF48',
-            color: '#fff',
-            '&:hover': {
-              backgroundColor: '#5BA738',
-            },
-            paddingX: '20px', 
-          }}
-        >
-          Save Changes
-        </Button>
+        {note ? (
+          <>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleSave}
+              endIcon={<CheckIcon />}
+              sx={{
+                height: '40px',
+                width: '180px',
+                backgroundColor: '#71CF48',
+                color: '#fff',
+                '&:hover': {
+                  backgroundColor: '#5BA738',
+                },
+                paddingX: '20px',
+                marginRight: '10px',
+              }}
+            >
+              Save Changes
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={onDelete}
+              sx={{
+                height: '40px',
+                width: '180px',
+                backgroundColor: '#E53935',
+                color: '#fff',
+                '&:hover': {
+                  backgroundColor: '#D32F2F',
+                },
+              }}
+            >
+              Delete Note
+            </Button>
+          </>
+        ) : (
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleSave}
+            endIcon={<CheckIcon />}
+            sx={{
+              height: '40px',
+              width: '180px',
+              backgroundColor: '#71CF48',
+              color: '#fff',
+              '&:hover': {
+                backgroundColor: '#5BA738',
+              },
+              paddingX: '20px',
+            }}
+          >
+            Create Note
+          </Button>
+        )}
       </Box>
     </Paper>
   );

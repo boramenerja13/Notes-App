@@ -14,16 +14,16 @@ export default function SearchAppBar() {
             noWrap
             component="div"
             sx={{
-                width: '87px',
-                height: '22px',
-                ml: '14px',   
-                mr: '20px',   
-                fontFamily: 'Open Sans, sans-serif',
-                fontWeight: 600,
-                fontSize: '16px',
-                lineHeight: '21.79px',
-                color: 'white',
-              }}
+              width: '87px',
+              height: '22px',
+              ml: '14px',
+              mr: '20px',
+              fontFamily: 'Open Sans, sans-serif',
+              fontWeight: 600,
+              fontSize: '16px',
+              lineHeight: '21.79px',
+              color: 'white',
+            }}
           >
             Your Notes
           </Typography>
