@@ -1,35 +1,43 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Paper } from '@mui/material';
+import { Box, Button, TextField, Paper, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
+import { v4 as uuidV4 } from 'uuid';
 
-export default function CreateNote({ categories, onSaveNote }) {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+export default function CreateNote({ note }) {
+  const categories = JSON.parse(localStorage.getItem('categories')) || [];
+
+  const [title, setTitle] = useState(note?.title || '');
+  const [content, setContent] = useState(note?.content || '');
+
+  const category = note?.category || categories?.[0]?.name || ''
+  const [selectedCategory, setSelectedCategory] = useState(category);
+
 
   const handleSave = () => {
     if (!title || !content) {
-      alert("Nothing to save");
+      // TODO: add popup instead of alert
+      alert('Title or content cannot be empty');
       return;
     }
 
-    const category = prompt("Select a category from: " + categories.map(c => c.name).join(", "));
-    if (category) {
-      const foundCategory = categories.find(c => c.name === category);
-      if (foundCategory) {
-        onSaveNote({
-          title,
-          content,
-          category: foundCategory.name,
-        });
+    const notes = JSON.parse(localStorage.getItem('notes')) || [];
+    notes.push({
+      id: uuidV4(),
+      title,
+      content,
+      category: selectedCategory,
+    })
 
-        alert("Successfully saved");
-        setTitle('');
-        setContent('');
-      } else {
-        alert("Category not found");
-      }
-    }
+    localStorage.setItem('notes', JSON.stringify(notes))
+    setTitle('');
+    setContent('');
   };
+
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
 
   return (
     <Paper
@@ -63,7 +71,6 @@ export default function CreateNote({ categories, onSaveNote }) {
               },
             }}
           >
-            {/* Additional Action Button */}
           </Button>
 
           <Button
@@ -77,7 +84,6 @@ export default function CreateNote({ categories, onSaveNote }) {
               margin: '0 10px'
             }}
           >
-            {/* Additional Action Button */}
           </Button>
         </Box>
 
@@ -137,6 +143,23 @@ export default function CreateNote({ categories, onSaveNote }) {
           onChange={(e) => setTitle(e.target.value)}
           sx={{ marginBottom: '20px' }}
         />
+
+        <FormControl fullWidth variant="outlined" 
+          sx={{ marginBottom: '20px' }}>
+          <InputLabel id="dynamic-select-label">Select an Option</InputLabel>
+          <Select
+            labelId="dynamic-select-label"
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            label="Select an Option"
+          >
+            {categories?.map((category) => (
+              <MenuItem value={category.name}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <TextField
           fullWidth

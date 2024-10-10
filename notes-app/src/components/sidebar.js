@@ -10,10 +10,11 @@ import FolderIcon from '@mui/icons-material/Folder';
 import AddIcon from '@mui/icons-material/Add';
 import ListItemButton from '@mui/material/ListItemButton';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuidV4 } from 'uuid';
 
 const drawerWidth = 370;
 
-export default function Sidebar({ onCreateCategory }) {
+export default function Sidebar({}) {
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
@@ -25,10 +26,9 @@ export default function Sidebar({ onCreateCategory }) {
   }, []);
 
   const handleCreateCategory = (newCategory) => {
-    const updatedCategories = [...categories, { name: newCategory }];
+    const updatedCategories = [...categories, { name: newCategory, id: uuidV4() }];
     setCategories(updatedCategories);
     localStorage.setItem('categories', JSON.stringify(updatedCategories));
-    onCreateCategory(newCategory);
   };
 
   return (
@@ -80,8 +80,8 @@ export default function Sidebar({ onCreateCategory }) {
           </Box>
 
           <List sx={{ padding: 0 }}>
-            {categories.map((category, index) => (
-              <ListItem key={index} disablePadding>
+            {categories.map((category) => (
+              <ListItem key={category.id} disablePadding>
                 <ListItemButton
                   sx={{
                     backgroundColor: '#1264A3',
@@ -91,7 +91,7 @@ export default function Sidebar({ onCreateCategory }) {
                     height: '42px',
                     width: '350px',
                   }}
-                  onClick={() => navigate(`/category/${index}`)}
+                  onClick={() => navigate(`/category/${category.id}`)}
                 >
                   
                   <FolderIcon sx={{ marginRight: 1 }} />

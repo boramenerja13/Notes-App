@@ -8,7 +8,8 @@ import { Box, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 function App() {
-  const [categories, setCategories] = useState([]);
+  const localCategories = JSON.parse(localStorage.getItem('categories')) || []
+  const [categories, setCategories] = useState(localCategories);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -19,27 +20,6 @@ function App() {
       document.body.style.overflow = 'auto';
     };
   }, []);
-
-  const handleCreateCategory = (newCategory) => {
-    const updatedCategories = [...categories, { name: newCategory, notes: [] }];
-    setCategories(updatedCategories);
-    localStorage.setItem('categories', JSON.stringify(updatedCategories));
-  };
-
-  const handleSaveNote = (note) => {
-    const updatedCategories = categories.map((category) => {
-      if (category.name === note.category) {
-        return {
-          ...category,
-          notes: [...category.notes, { title: note.title, content: note.content }],
-        };
-      }
-      return category;
-    });
-
-    setCategories(updatedCategories);
-    localStorage.setItem('categories', JSON.stringify(updatedCategories));
-  };
 
   return (
     <Router>
@@ -56,7 +36,7 @@ function App() {
         />
 
         <Box display="flex" sx={{ height: '100vh', paddingTop: '0px' }}>
-          <Sidebar onCreateCategory={handleCreateCategory} />
+          <Sidebar />
           <Box
             sx={{
               flexGrow: 1,
@@ -69,7 +49,7 @@ function App() {
           >
             {/* <CreateNote categories={categories} onSaveNote={handleSaveNote} /> */}
             <Routes>
-                <Route path="/" element={<CreateNote categories={categories} onSaveNote={handleSaveNote} />} />
+                <Route path="/" element={<CreateNote categories={categories} />} />
                 <Route path="/category/:categoryId" element={<CategoryPage categories={categories} />} />
             </Routes>
           </Box>
