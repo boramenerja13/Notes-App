@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import Navbar from './components/navbar';
-import Sidebar from './components/sidebar';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import CreateEditNote from './components/CreateEditNote';
 import Category from './components/Category';
 import { Box, CssBaseline } from '@mui/material';

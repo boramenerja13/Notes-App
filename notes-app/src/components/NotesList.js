@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, ListItem, ListItemText } from '@mui/material';
 
-export default function InteractiveList({ notes, onSelectNote }) {
+export default function NotesList({ notes, onSelectNote }) {
     return (
         <List>
             {notes.map((note) => (

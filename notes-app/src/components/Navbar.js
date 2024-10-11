@@ -31,11 +31,9 @@ export default function SearchAppBar() {
           </Typography>
           <IconButton
             edge="end"
-            color="white"
             backgroundColor = "#FFFFFF"
             aria-label="close"
-            sx={{ ml: 'auto' }} 
-            disabled 
+            sx={{ ml: 'auto', color: 'white' }} 
           >
             <CloseIcon />
           </IconButton>
