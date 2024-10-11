@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Paper, Button, IconButton, TextField } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import CreateNote from './createNote';
 import SearchIcon from '@mui/icons-material/Search';
@@ -9,11 +9,17 @@ import NotesList from './notesList';
 export default function CategoryPage({ categories, onSaveNote }) {
   const { categoryId } = useParams();
   const category = categories.find((cat) => cat.id === categoryId);
+  const navigate = useNavigate();
 
   const [selectedNote, setSelectedNote] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const allNotes = JSON.parse(localStorage.getItem('notes')) || [];
   const notes = allNotes.filter((note) => note.category === category.name);
+
+  const filteredNotes = notes.filter((note) =>
+    note.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     setSelectedNote(null);
@@ -43,7 +49,15 @@ export default function CategoryPage({ categories, onSaveNote }) {
     localStorage.setItem('notes', JSON.stringify(updatedNotes));
     setSelectedNote(null);
   }
+
+  const handleCreateNoteClick = () => {
+    navigate('/create-note');
+  };
   
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
     return (
     <Paper
       elevation={3}
@@ -63,7 +77,7 @@ export default function CategoryPage({ categories, onSaveNote }) {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => setSelectedNote(null)}
+          onClick={handleCreateNoteClick}
           sx={{ marginRight: '10px', backgroundColor: '#71CF48' }}
         >
           Create Note
@@ -72,6 +86,8 @@ export default function CategoryPage({ categories, onSaveNote }) {
           variant="outlined"
           placeholder="Search..."
           size="small"
+          value={searchQuery}
+          onChange={handleSearchChange}
           InputProps={{
             endAdornment: (
               <IconButton color="primary" aria-label="search">
@@ -84,7 +100,7 @@ export default function CategoryPage({ categories, onSaveNote }) {
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={selectedNote ? 6 : 12}>
-          <NotesList notes={notes} onSelectNote={handleSelectNote} />
+          <NotesList notes={filteredNotes} onSelectNote={handleSelectNote} />
         </Grid>
         {selectedNote && (
           <Grid item xs={12} md={6}>

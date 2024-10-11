@@ -47,10 +47,10 @@ function App() {
               overflowY: 'auto',
             }}
           >
-            {/* <CreateNote categories={categories} onSaveNote={handleSaveNote} /> */}
             <Routes>
               <Route path="/" element={<CreateNote categories={categories} />} />
               <Route path="/category/:categoryId" element={<CategoryPage categories={categories} />} />
+              <Route path="/create-note" element={<CreateNote categories={categories} />} />
             </Routes>
           </Box>
         </Box>
