@@ -15,7 +15,6 @@ export default function CreateEditNote({ note, onSave, onDelete }) {
 
   const handleSave = () => {
     if (!title || !content) {
-      // TODO: add popup instead of alert
       alert('Title or content cannot be empty');
       return;
     }
