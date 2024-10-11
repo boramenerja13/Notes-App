@@ -3,7 +3,7 @@ import { Box, Button, TextField, Paper, FormControl, InputLabel, Select, MenuIte
 import CheckIcon from '@mui/icons-material/Check';
 import { v4 as uuidV4 } from 'uuid';
 
-export default function CreateNote({ note, onSave, onDelete }) {
+export default function CreateEditNote({ note, onSave, onDelete }) {
   const categories = JSON.parse(localStorage.getItem('categories')) || [];
 
   const [title, setTitle] = useState(note?.title || '');
@@ -49,7 +49,7 @@ export default function CreateNote({ note, onSave, onDelete }) {
       sx={{
         width: '100%',
         maxWidth: '1440px',
-        height: 'calc(100vh - 60px)',
+        height: 'calc(90vh - 60px)',
         padding: '24px',
         borderRadius: '10px',
         margin: 'auto',
@@ -97,9 +97,25 @@ export default function CreateNote({ note, onSave, onDelete }) {
         />
       </Box>
 
-      <Box display="flex" justifyContent="flex-end" sx={{ marginTop: 'auto', paddingTop: '20px' }}>
+      <Box display="flex" justifyContent="space-between" sx={{ marginTop: 'auto', paddingTop: '20px' }}>
         {note ? (
           <>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={onDelete}
+              sx={{
+                height: '40px',
+                width: '180px',
+                backgroundColor: '#E53935',
+                color: '#fff',
+                '&:hover': {
+                  backgroundColor: '#D32F2F',
+                },
+              }}
+            >
+              Delete Note
+            </Button>
             <Button
               variant="contained"
               color="success"
@@ -118,22 +134,6 @@ export default function CreateNote({ note, onSave, onDelete }) {
               }}
             >
               Save Changes
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={onDelete}
-              sx={{
-                height: '40px',
-                width: '180px',
-                backgroundColor: '#E53935',
-                color: '#fff',
-                '&:hover': {
-                  backgroundColor: '#D32F2F',
-                },
-              }}
-            >
-              Delete Note
             </Button>
           </>
         ) : (

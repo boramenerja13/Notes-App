@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import Navbar from './components/navbar';
 import Sidebar from './components/sidebar';
-import CreateNote from './components/createNote';
-import CategoryPage from './components/categoryPage';
+import CreateEditNote from './components/CreateEditNote';
+import Category from './components/Category';
 import { Box, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -48,9 +48,9 @@ function App() {
             }}
           >
             <Routes>
-              <Route path="/" element={<CreateNote categories={categories} />} />
-              <Route path="/category/:categoryId" element={<CategoryPage categories={categories} />} />
-              <Route path="/create-note" element={<CreateNote categories={categories} />} />
+              <Route path="/" element={<CreateEditNote categories={categories} />} />
+              <Route path="/category/:categoryId" element={<Category categories={categories} />} />
+              <Route path="/create-note" element={<CreateEditNote categories={categories} />} />
             </Routes>
           </Box>
         </Box>

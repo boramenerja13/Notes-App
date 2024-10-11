@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Box, Paper, Button, IconButton, TextField } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
-import CreateNote from './createNote';
+import CreateEditNote from './CreateEditNote';
 import SearchIcon from '@mui/icons-material/Search';
-import NotesList from './notesList';
+import NotesList from './NotesList';
 
-export default function CategoryPage({ categories, onSaveNote }) {
+export default function Category({ categories, onSaveNote }) {
   const { categoryId } = useParams();
   const category = categories.find((cat) => cat.id === categoryId);
   const navigate = useNavigate();
@@ -73,38 +73,38 @@ export default function CategoryPage({ categories, onSaveNote }) {
         flexDirection: 'column',
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleCreateNoteClick}
-          sx={{ marginRight: '10px', backgroundColor: '#71CF48' }}
-        >
-          Create Note
-        </Button>
-        <TextField
-          variant="outlined"
-          placeholder="Search..."
-          size="small"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          InputProps={{
-            endAdornment: (
-              <IconButton color="primary" aria-label="search">
-                <SearchIcon />
-              </IconButton>
-            ),
-          }}
-        />
-      </Box>
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={selectedNote ? 6 : 12}>
+          <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleCreateNoteClick}
+              sx={{ marginRight: '10px', backgroundColor: '#71CF48' }}
+            >
+              Create Note
+            </Button>
+            <TextField
+              variant="outlined"
+              placeholder="Search..."
+              size="small"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              InputProps={{
+                endAdornment: (
+                  <IconButton color="primary" aria-label="search">
+                    <SearchIcon />
+                  </IconButton>
+                ),
+              }}
+            />
+          </Box>
           <NotesList notes={filteredNotes} onSelectNote={handleSelectNote} />
         </Grid>
         {selectedNote && (
           <Grid item xs={12} md={6}>
-            <CreateNote 
+            <CreateEditNote 
             key={selectedNote.id} 
             note={selectedNote}
             onSave={handleSaveNote}

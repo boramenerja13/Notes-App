@@ -3,6 +3,8 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function SearchAppBar() {
   return (
@@ -27,6 +29,16 @@ export default function SearchAppBar() {
           >
             Your Notes
           </Typography>
+          <IconButton
+            edge="end"
+            color="white"
+            backgroundColor = "#FFFFFF"
+            aria-label="close"
+            sx={{ ml: 'auto' }} 
+            disabled 
+          >
+            <CloseIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
     </Box>
